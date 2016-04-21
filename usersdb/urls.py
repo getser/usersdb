@@ -15,9 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls import patterns
+from django.contrib.auth.decorators import login_required
+
+from users.views import UserFormView, IndexView
 
 from tastypie.api import Api
 from users.api import UserResource
+
+
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
@@ -26,4 +32,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^api/', include(v1_api.urls)),
+
+    url(r'^user-form/$', login_required(UserFormView.as_view()), name='user_form'),
+    url(r'^$', IndexView.as_view(), name='index_user'),
+
 ]

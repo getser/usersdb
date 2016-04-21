@@ -1,0 +1,19 @@
+{% extends 'Users/base.html' %}
+
+{% load i18n %}
+
+{% load static from staticfiles %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+  {% crispy UserForm %}
+  <button type="button" class="btn btn-default"  ng-click="submitUser()">Create</button>
+
+{% endblock content %}
+
+{% block extra_javascript %}
+  <script source="{{ STAIC_URL }}/javascript/app.js"></script>
+{% endblock extra_javascript %}
