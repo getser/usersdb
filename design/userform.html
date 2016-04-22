@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang='uk'>
+<head>
+<meta charset="UTF-8"/>
+<title>Дані користувачів</title>
+<meta name="description"
+value="База даних користувачів"/>
+<!-- Include styles -->
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="./css/main.css"> -->
+</head>
+<body>
+  <!-- Start Container -->
+  <div class='container'>
+    <div class="well well-sm">
+      <h3 class="text-center">Редагування даних користувача</h3>
+    </div>
+    <br/>
+    <form class="form-horizontal">
+      <fieldset class='center'>
+        <!-- Form Name -->
+<!--         <div class="well well-sm">
+          <legend class="text-center">Редагування даних користувача</legend>
+        </div> -->
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-xs-5 control-label" for="lname">Прізвище</label>
+          <div class="col-sm-6 col-md-5 col-lg-4">
+            <input id="lname" name="lname" type="text" placeholder="Ваше прізвище" class="form-control input-md">
+          </div>
+        </div>
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-xs-5 control-label" for="fname">Ім'я</label>
+          <div class="col-sm-6 col-md-5 col-lg-4">
+            <input id="fname" name="fname" type="text" placeholder="Ваше ім'я" class="form-control input-md">
+          </div>
+        </div>
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-xs-5 control-label" for="sname">По-батькові</label>
+          <div class="col-sm-6 col-md-5 col-lg-4">
+            <input id="sname" name="sname" type="text" placeholder="Ваше по-батькові" class="form-control input-md">
+          </div>
+        </div>
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-xs-5 control-label" for="birth">Дата народження</label>
+          <div class="col-sm-6 col-md-5 col-lg-4">
+            <!-- <div class='input-group'> -->
+              <input id="birth" name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" />
+<!--               <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span> -->
+<!--                  <script type="text/javascript">
+                  $(function () {
+                    $('#datetimepicker2').datetimepicker({
+                        locale: 'ru'
+                      });
+                    });
+              </script> -->
+            <!-- </div> -->
+          </div>
+        </div>
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-xs-5 control-label" for="e_mail">Електронна пошта</label>
+          <div class="col-sm-6 col-md-5 col-lg-4">
+            <input id="e_mail" name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md">
+          </div>
+        </div>
+        <!-- Text -->
+        <div class="form-group">
+          <label class="col-xs-5 control-label" for="addittext">Додаткові нотатки</label>
+          <div class="col-sm-6 col-md-5 col-lg-4">
+            <textarea id="addittext" name="addittext" class="form-control" rows="5"></textarea>
+          </div>
+        </div>
+        <!-- Small well -->
+        <div class="well well-sm">
+          <!-- Button -->
+          <div class="form-group">
+            <!-- <label class="col-xs-5 control-label" for="signup"></label> -->
+            <div class="col-sm-offset-5 col-sm-6 col-md-5 col-lg-4">
+              <button id="signup" name="signup" class="btn btn-primary" href='#'>Зберегти</button>
+              <a class='btn' href='index.html'>Скасувати</a>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <!-- End Container -->
+  <!-- Javascripts Section -->
+  <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>

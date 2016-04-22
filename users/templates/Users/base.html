@@ -13,8 +13,8 @@
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js"></script>
-        <script src="angular-ui-router.min.js"></script>
-        <script type="text/javascript" src="http://cdn.jsdelivr.net/restangular.js"></script>
+        <script src="https://cdn.jsdelivr.net/angular.ui-router/1.0.0-alpha0/angular-ui-router.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/restangular/1.5.2/restangular.min.js"></script>
 
 
         <!-- <link rel="stylesheet" href={{ PORTAL_URL }}{% static "css/main.css" %}> -->
@@ -32,7 +32,7 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
         <script src="HTTP://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-        <script src="{% static "js/main.js" %}"></script>
+        <!-- <script src="{{ STATIC_URL }}/static/js/main.js"></script> -->
         {% block extra_javascript %}{% endblock extra_javascript %}
     </body>
 </html>
