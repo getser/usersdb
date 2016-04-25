@@ -71,6 +71,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'usersdb.context_processors.users_proc', # our own context processor
+
             ],
         },
     },
@@ -125,14 +127,14 @@ USE_L10N = True
 USE_TZ = True
 
 
+# PORTAL_URL = 'http://localhost:8000'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,"static/static-only")
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,"static/static"),
-    )
+
+# PORTAL_URL = 'http://localhost:8000'
 
 #Application data files storage configuration (photo, .mp3, etc.)
 
