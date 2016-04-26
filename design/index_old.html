@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang='uk'>
+<head>
+  <meta charset="UTF-8"/>
+  <title>Дані користувачів</title>
+  <meta name="description"
+        value="База даних користувачів"/>
+  <!-- Include styles -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+        
+  <!-- <link rel="stylesheet" href="./css/main.css"> -->
+    <script>
+  // Модуль
+
+var UserDBApp = angular.module("UserDBApp", []);
+
+console.log("presponse0")
+// Контроллер
+
+UserDBApp.controller("UserDBAppCtrl", function ($scope, $http) {
+  console.log("presponse4")
+  var promise =  $http.get("http://127.0.0.1:8000/api/v1/user/?format=json");
+  promise.then(fulfilled, rejected)
+  console.log("presponse1")
+  function fulfilled(response) {
+    console.log("Status: " + response.status);
+    console.log("Type: " + response.headers("content-type"));
+    console.log("Length: " + response.headers("content-length"));
+
+    var model = {users:[]};
+    model.users = response.data.objects;
+    console.log("presponse2")
+    $scope.data = model;
+
+    }
+
+  function rejected(error) {
+    console.log("presponse3")
+    console.error(error.status);
+    console.error(error.statusText);
+
+    }
+
+
+  // Обработчик нажатия по кнопке
+  $scope.addNewUser = function (AddUserForm) {
+    if (AddUserForm.$valid){
+      $scope.data.users.push({
+          last_name: $scope.LAST_NAME,
+          first_name: $scope.FIRST_NAME,
+          middle_name: $scope.SECOND_NAME,
+          birthday: $scope.DATE_OF_BIRTH,
+          e_mail: $scope.E_MAIL
+      });
+
+        $scope.LAST_NAME = ""
+        $scope.FIRST_NAME = ""
+        $scope.SECOND_NAME = ""
+        $scope.DATE_OF_BIRTH = ""
+        $scope.E_MAIL = ""
+        
+        }}
+
+});
+
+</script>
+</head>
+    <body ng-controller="UserDBAppCtrl">
+    {% csrf_token %}
+        <!-- Start Container -->
+        <div class='container'>
+
+            <!-- Start Header -->
+            <!-- <header> -->   
+            <div class='row' id='header'>
+                <!-- Logo -->
+                <div class="col-sm-4 col-md-3">
+                  <h3>Дані користувачів</h3>
+                  <br/>
+                </div>
+                <div class="col-sm-2">
+                <br/>
+                    <a class='btn btn-primary' href='userform.html'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Додати&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                </div>
+                <div class="col-sm-2">
+                <br/>
+                    <a class='btn btn-success' href='userform.html'>Завантажити</a>
+                </div>
+                                    
+            <!-- </header> -->
+            <!-- End Header -->
+            <!-- Start Main Page Content -->
+            <br/>
+            <div class='row' id='content-columns'>
+                <div class="col-xs-12" id="content-column">
+                    <div class='alert alert-warning'>
+                        <p>Зміни скасовано.</p>
+                    </div>
+
+                    <table class='table table-hover table-striped'>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th><a hred=''>Прізвище &uarr;</a></th>
+                                <th><a href='#'>Ім'я</a></th>
+                                <th><a href='#'>По-батькові</a></th>
+                                <th><a href='#'>Дата народження</a></th>
+                                <th><a href='#'>Ел. адреса</a></th>
+                                <th class="text-center">Видалити</th>
+
+                            </tr>
+                        </thead>
+                        {% verbatim %}
+                        <tbody>
+                            <tr ng-repeat="user in data.users">
+                                <td>{{ user.id }}</td>
+                                <td><a title='Редагувати' href='#'>{{ user.last_name }}</a></td>
+                                <td><a title='Редагувати' href='#'>{{ user.first_name }}</a></td>
+                                <td>{{ user.middle_name }}</td>
+                                <td>{{ user.birthday }}</td>
+                                <td>{{ user.e_mail }}</td>
+                                <td class="text-center"><a title='Видалити' href='#'class='btn btn-danger'>Х</a></td>
+
+                            </tr>
+                        </tbody>
+                        {% endverbatim %}
+                    </table>
+
+                    <nav>
+                      <a class='btn btn-default' href='studform.html'>Показати ще</a>
+                    </nav>
+                    <br/>
+
+                </div>
+            </div>
+            <!-- End Main Page Content -->
+
+            <!-- Start Footer -->
+            <div class="row" id="footer">
+                <div class="col-xs-12">
+                    <p>&copy; 2016 База даних користувачів</p>
+                </div>
+            </div>
+            <!-- End Footer -->
+
+        </div>
+        <!-- End Container -->
+
+        <!-- Javascripts Section -->
+         <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+        <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    </body>
+</html>
