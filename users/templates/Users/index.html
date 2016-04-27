@@ -18,14 +18,17 @@
   <script>
   // Модуль
 
-var UserDBApp = angular.module("UserDBApp", []);
+var UserDBApp = angular.module("UserDBApp", [])
 
-console.log("presponse0")
+.constant("baseUrl", "http://127.0.0.1:8000/api/v1/user/")
+.constant("suffixUrl", "?format=json")
+
+// console.log("presponse0")
 // Контроллер
 
-UserDBApp.controller("UserDBAppCtrl", function ($scope, $http) {
+UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUrl) {
   console.log("presponse4")
-  var promise =  $http.get("http://127.0.0.1:8000/api/v1/user/?format=json");
+  var promise =  $http.get(baseUrl + suffixUrl);
   promise.then(fulfilled, rejected)
   console.log("presponse1")
   function fulfilled(response) {
@@ -51,19 +54,36 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http) {
   // Обработчик нажатия по кнопке
   $scope.addNewUser = function () {
     if ($scope.LAST_NAME && $scope.FIRST_NAME && $scope.DATE_OF_BIRTH && $scope.E_MAIL){
-      $scope.data.users.push({
+        var user = {}
+          user = {
           last_name: $scope.LAST_NAME,
           first_name: $scope.FIRST_NAME,
           middle_name: $scope.SECOND_NAME,
           birthday: $scope.DATE_OF_BIRTH,
           e_mail: $scope.E_MAIL
-      });
+      };
+      console.log("presponse20")
+      // console.log(JSON.stringify(user))
+      $http.post(baseUrl + suffixUrl, user).success(function (user){
+        console.log(JSON.stringify(user))
+
+        $scope.data.users.push(user);
 
         $scope.LAST_NAME = ""
         $scope.FIRST_NAME = ""
         $scope.SECOND_NAME = ""
         $scope.DATE_OF_BIRTH = ""
         $scope.E_MAIL = ""
+
+      });
+
+      // $scope.data.users.push(user);
+
+      // $scope.LAST_NAME = ""
+      // $scope.FIRST_NAME = ""
+      // $scope.SECOND_NAME = ""
+      // $scope.DATE_OF_BIRTH = ""
+      // $scope.E_MAIL = ""
         
         }}  
 
