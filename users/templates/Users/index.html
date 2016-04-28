@@ -49,7 +49,7 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
     }
 
 
-  // Обработчик нажатия по кнопке
+  // Обработчик нажатия по кнопке addNewUser
   $scope.addNewUser = function () {
     if ($scope.LAST_NAME && $scope.FIRST_NAME && $scope.DATE_OF_BIRTH && $scope.E_MAIL){
         var user = {}
@@ -69,16 +69,52 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
 
         $scope.data.users.push(user);
 
-        $scope.LAST_NAME = "yt"
-        $scope.FIRST_NAME = "uytu"
-        $scope.SECOND_NAME = "utyu"
-        $scope.DATE_OF_BIRTH = "uytf"
-        $scope.E_MAIL = "uftyt"
+        $scope.LAST_NAME = ""
+        $scope.FIRST_NAME = ""
+        $scope.SECOND_NAME = ""
+        $scope.DATE_OF_BIRTH = ""
+        $scope.E_MAIL = ""
 
       });
 
         
   }}  
+
+
+  // Обработчик нажатия по кнопке editUser
+  // $scope.editUser = function () {
+  //   if ($scope.LAST_NAME && $scope.FIRST_NAME && $scope.DATE_OF_BIRTH && $scope.E_MAIL){
+  //       var user = {}
+  //         user = {
+  //         last_name: $scope.LAST_NAME,
+  //         first_name: $scope.FIRST_NAME,
+  //         middle_name: $scope.SECOND_NAME,
+  //         birthday: $scope.DATE_OF_BIRTH,
+  //         e_mail: $scope.E_MAIL
+  //       }
+  //     console.log("presponse20")
+  //     // console.log(JSON.stringify(user))
+  //     var request = $http.post(baseUrl + suffixUrl, user)
+  //     request.success(function ( ){
+
+  //       // console.log(JSON.stringify(user))
+
+  //     }); 
+  // }}  
+
+
+  // Обработчик нажатия по кнопке deleteUser
+  $scope.deleteUser = function (ID, index) {
+    console.log(ID)
+
+      var request = $http.delete(baseUrl + ID + '/' + suffixUrl)
+      request.success(function (){
+
+        $scope.data.users.splice(index, 1);
+
+      }); 
+    }  
+
 
 });
 
@@ -148,7 +184,7 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
                                 <td><input id="sname" name="sname" type="text" placeholder="по-батькові" class="form-control input-md" ng-model="SECOND_NAME" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></td>
                                 <td><input id="birth" name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" required ng-model="DATE_OF_BIRTH" ng-pattern="/^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/"></td>
                                 <td><input id="e_mail" name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md" required ng-model="E_MAIL" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ng-trim="false"></td>
-                                <td class="text-center"><button type="Submit" title='Зберегти' href='#' class='btn btn-success' ng-click="addNewUser(AddUserForm)">+</button></td>
+                                <td class="text-center"><button type="Submit" title='Зберегти' href='#' class='btn btn-success' ng-click="addNewUser()">+</button></td>
                               </form>
                             </tr>
                             <tr ng-repeat="user in data.users">
@@ -159,7 +195,7 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
                                 <td>{{ user.middle_name }}</td>
                                 <td>{{ user.birthday }}</td>
                                 <td>{{ user.e_mail }}</td>
-                                <td class="text-center"><a title='Видалити' href='#'class='btn btn-danger'>Х</a></td>
+                                <td class="text-center"><a title='Видалити' href='#'class='btn btn-danger' ng-click="deleteUser(user.id, $index)">Х</a></td>
                                 
                             </tr>
 
