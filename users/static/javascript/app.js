@@ -1,58 +1,118 @@
-var app = angular.module('UserApp', [
-    'ui.router',
-    'restangular'
-])
+  // Модуль
+var UserDBApp = angular.module("UserDBApp", [])
 
-app.config(function ($stateProvider, $urlRouterProvider, RestangularProvider) {
-    // For any unmatched url, send to /route1
-    $urlRouterProvider.otherwise("/");
-    $stateProvider
-        .state('index', {
+.constant("baseUrl", "http://127.0.0.1:8000/api/v1/user/")
+.constant("suffixUrl", "?format=json")
 
-            url: "/",
-            templateUrl: "/static/html/partials/_user_list.html",
-            controller: "UserList"
-        })
+// Контроллер
+UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUrl) {
 
-       .state('new', {
+  var promise =  $http.get(baseUrl + suffixUrl);
+  promise.then(fulfilled, rejected)
 
-            url: "/new",
-            templateUrl: "/users/user-form",
-            controller: "UserFormCtrl"
-        })
-})
+  function fulfilled(response) {
+    console.log("Status: " + response.status);
+    console.log("Type: " + response.headers("content-type"));
+    console.log("Length: " + response.headers("content-length"));
 
-app.controller("JobFormCtrl", ['$scope', 'Restangular', 'CbgenRestangular', '$q',
-function ($scope, Restangular, CbgenRestangular, $q) {
-
-    $scope.submitJob = function () {
-    var post_update_data = create_resource($scope, CbgenRestangular);
-        $q.when(post_update_data.then(
-            function (object) {
-                // success!
-            },
-
-            function (object){
-                // error!
-                console.log(object.data)
-            }
-
-        ))
+    var model = {users:[]};
+    model.users = response.data.objects;
+    $scope.data = model;
     }
 
-}])// end controller
+  function rejected(error) {
+    console.log("presponse3")
+    console.error(error.status);
+    console.error(error.statusText);
+    }
 
-app.factory('CbgenRestangular', function (Restangular) {
-    return Restangular.withConfig(function (RestangularConfigurer) {
-        RestangularConfigurer.setBaseUrl('/api/v1');
-    });
-})
+  // Обработчик нажатия по кнопке addNewUser
+  $scope.addNewUser = function () {
+    if ($scope.LAST_NAME && $scope.FIRST_NAME && $scope.DATE_OF_BIRTH && $scope.E_MAIL){
+        var user = {
+          last_name: $scope.LAST_NAME,
+          first_name: $scope.FIRST_NAME,
+          middle_name: $scope.SECOND_NAME,
+          birthday: $scope.DATE_OF_BIRTH,
+          e_mail: $scope.E_MAIL
+        }
 
-populate_scope_values = function ($scope) {
-    return {name: $scope.name, description: $scope.description };
-},
+      var request = $http.post(baseUrl + suffixUrl, user)
+      request.success(function ( ){
 
-create_resource = function ($scope, CbgenRestangular) {
-var post_data = populate_scope_values($scope)
-    return CbgenRestangular.all('user/').post(post_data)
-}
+        // console.log(JSON.stringify(user))
+
+        $scope.data.users.push(user);
+
+        $scope.LAST_NAME = ""
+        $scope.FIRST_NAME = ""
+        $scope.SECOND_NAME = ""
+        $scope.DATE_OF_BIRTH = ""
+        $scope.E_MAIL = ""
+
+      });   
+  }}  
+
+  // Обработчик editUserSwitcher
+  $scope.editUserSwitcher = function (ID, index) {
+    $scope.editUserIndex = index
+
+    $scope.LAST_NAME_EDIT = $scope.data.users[index].last_name
+    $scope.FIRST_NAME_EDIT = $scope.data.users[index].first_name
+    $scope.SECOND_NAME_EDIT = $scope.data.users[index].middle_name
+    $scope.DATE_OF_BIRTH_EDIT = $scope.data.users[index].birthday
+    $scope.E_MAIL_EDIT = $scope.data.users[index].e_mail
+  }
+
+  // Обработчик нажатия по кнопке editUser
+  $scope.editUser = function (ID, index) {
+  //
+    $scope.data.users[index].last_name = $scope.LAST_NAME_EDIT
+    $scope.data.users[index].first_name = $scope.FIRST_NAME_EDIT
+    $scope.data.users[index].middle_name = $scope.SECOND_NAME_EDIT
+    $scope.data.users[index].birthday = $scope.DATE_OF_BIRTH_EDIT
+    $scope.data.users[index].e_mail = $scope.E_MAIL_EDIT
+
+
+    if ($scope.LAST_NAME_EDIT && $scope.FIRST_NAME_EDIT && $scope.DATE_OF_BIRTH_EDIT && $scope.E_MAIL_EDIT){
+        var user = {
+          id: ID,
+          last_name: $scope.LAST_NAME_EDIT,
+          first_name: $scope.FIRST_NAME_EDIT,
+          middle_name: $scope.SECOND_NAME_EDIT,
+          birthday: $scope.DATE_OF_BIRTH_EDIT,
+          e_mail: $scope.E_MAIL_EDIT
+          // e_mail: "no@mail.not"
+        }
+
+      console.log(JSON.stringify(user))
+      console.log($scope.data.users[index])
+      // console.log(document.getElementById('lname_edit' + index).innerHTML)
+      console.log('lname_edit' + index)
+
+      var request = $http.put(baseUrl + ID + '/' + suffixUrl, user)
+      request.success(function (){
+        user = {}
+        $scope.editUserIndex = null
+        $scope.LAST_NAME_EDIT = ""
+        $scope.FIRST_NAME_EDIT = ""
+        $scope.SECOND_NAME_EDIT = ""
+        $scope.DATE_OF_BIRTH_EDIT = ""
+        $scope.E_MAIL_EDIT = ""
+
+      }); 
+  }}
+
+  // Обработчик нажатия по кнопке deleteUser
+  $scope.deleteUser = function (ID, index) {
+    // console.log(ID)
+
+      var request = $http.delete(baseUrl + ID + '/' + suffixUrl)
+      request.success(function (){
+
+        $scope.data.users.splice(index, 1);
+
+      }); 
+    }  
+
+});

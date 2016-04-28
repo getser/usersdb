@@ -1,6 +1,5 @@
 {% load static from staticfiles %}
 
-
 <!DOCTYPE html>
 <html lang='uk' ng-app="UserDBApp">
 <head>
@@ -12,134 +11,9 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/bootstrap/3.3.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-  <!-- <link rel="stylesheet" href="./css/main.css"> -->
+
   <link rel="stylesheet" href={{ PORTAL_URL }}{% static "css/main.css" %}>
-  <!-- <script source={ PORTAL_URL }}{% static "javascript/main.js" %}></script> -->
-  <script>
-  // Модуль
-
-var UserDBApp = angular.module("UserDBApp", [])
-
-.constant("baseUrl", "http://127.0.0.1:8000/api/v1/user/")
-.constant("suffixUrl", "?format=json")
-
-// console.log("presponse0")
-// Контроллер
-
-UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUrl) {
-  // console.log("presponse4")
-  var promise =  $http.get(baseUrl + suffixUrl);
-  promise.then(fulfilled, rejected)
-  // console.log("presponse1")
-  function fulfilled(response) {
-    console.log("Status: " + response.status);
-    console.log("Type: " + response.headers("content-type"));
-    console.log("Length: " + response.headers("content-length"));
-
-    var model = {users:[]};
-    model.users = response.data.objects;
-    // console.log("presponse2")
-    $scope.data = model;
-    }
-
-  function rejected(error) {
-    console.log("presponse3")
-    console.error(error.status);
-    console.error(error.statusText);
-    }
-
-
-  // Обработчик нажатия по кнопке addNewUser
-  $scope.addNewUser = function () {
-    if ($scope.LAST_NAME && $scope.FIRST_NAME && $scope.DATE_OF_BIRTH && $scope.E_MAIL){
-        var user = {}
-          user = {
-          last_name: $scope.LAST_NAME,
-          first_name: $scope.FIRST_NAME,
-          middle_name: $scope.SECOND_NAME,
-          birthday: $scope.DATE_OF_BIRTH,
-          e_mail: $scope.E_MAIL
-        }
-      console.log("presponse20")
-      // console.log(JSON.stringify(user))
-      var request = $http.post(baseUrl + suffixUrl, user)
-      request.success(function ( ){
-
-        // console.log(JSON.stringify(user))
-
-        $scope.data.users.push(user);
-
-        $scope.LAST_NAME = ""
-        $scope.FIRST_NAME = ""
-        $scope.SECOND_NAME = ""
-        $scope.DATE_OF_BIRTH = ""
-        $scope.E_MAIL = ""
-
-      });   
-  }}  
-
-
-  // Обработчик editUserSwitcher
-  $scope.editUserSwitcher = function (ID, index) {
-    $scope.editUserIndex = index
-    // console.log(ID)
-    // console.log($scope.data.users)
-
-    for (user in $scope.data.users){
-      // console.log($scope.data.users[user].id)
-      if ($scope.data.users[user].id == ID){
-        console.log(ID)
-        $scope.LAST_NAME_EDIT = $scope.data.users[user].last_name
-        $scope.FIRST_NAME_EDIT = $scope.data.users[user].first_name
-        $scope.SECOND_NAME_EDIT = $scope.data.users[user].middle_name
-        $scope.DATE_OF_BIRTH_EDIT = $scope.data.users[user].birthday
-        $scope.E_MAIL_EDIT = $scope.data.users[user].e_mail
-
-        break;
-      }
-    }
-  }
-
-
-  // Обработчик нажатия по кнопке editUser
-  $scope.editUser = function (ID) {
-  //   
-        var user = {}
-          user = {
-          id: ID,
-          last_name: $scope.LAST_NAME_EDIT,
-          first_name: $scope.FIRST_NAME_EDIT,
-          middle_name: $scope.SECOND_NAME_EDIT,
-          birthday: $scope.DATE_OF_BIRTH_EDIT,
-          e_mail: $scope.E_MAIL_EDIT
-        }
-  //     console.log("presponse20")
-      // console.log(JSON.stringify(user))
-      var request = $http.put(baseUrl + ID + '/' + suffixUrl, user)
-      request.success(function (){
-        $scope.editUserIndex = null
-        // console.log(JSON.stringify(user))
-
-      }); 
-  }  
-
-
-  // Обработчик нажатия по кнопке deleteUser
-  $scope.deleteUser = function (ID, index) {
-    // console.log(ID)
-
-      var request = $http.delete(baseUrl + ID + '/' + suffixUrl)
-      request.success(function (){
-
-        $scope.data.users.splice(index, 1);
-
-      }); 
-    }  
-
-
-});
-
-</script>
+  <script src={{ PORTAL_URL }}{% static "javascript/app.js" %}></script>
 
 </head>
     <body ng-controller="UserDBAppCtrl">
@@ -209,45 +83,47 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
                               </form>
                             </tr>
                             <tr ng-repeat="user in data.users">
-                                
+                              <form name="EditUserForm">  
                                 <td>
                                   <span ng-hide="editUserIndex == $index">{{ user.id }}</span>
                                   <span ng-show="editUserIndex == $index">{{ user.id }}</span>
                                 </td>
                                 <td>
                                   <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(user.id, $index)">{{ user.last_name }}</a></span>
-                                  <span ng-show="editUserIndex == $index"><input id="lname" name="lname" type="text" placeholder="прізвище" class="form-control input-md" required ng-model="LAST_NAME_EDIT" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{lname_edit + $index}} name="lname" type="text" placeholder="прізвище" class="form-control input-md" required ng-model="LAST_NAME_EDIT" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
                                 </td>
                                 <td>
                                   <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(user.id, $index)">{{ user.first_name }}</a></span>
-                                  <span ng-show="editUserIndex == $index"><input id="fname" name="fname" type="text" placeholder="ім'я" class="form-control input-md" required ng-model="FIRST_NAME_EDIT" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{fname_edit + $index}} name="fname" type="text" placeholder="ім'я" class="form-control input-md" required ng-model="FIRST_NAME_EDIT" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
                                 </td>
                                 <td>
                                   <span ng-hide="editUserIndex == $index">{{ user.middle_name }}</span>
-                                  <span ng-show="editUserIndex == $index"><input id="sname" name="sname" type="text" placeholder="по-батькові" class="form-control input-md" ng-model="SECOND_NAME_EDIT" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false" value=user.middle_name></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{sname_edit + $index}} name="sname" type="text" placeholder="по-батькові" class="form-control input-md" ng-model="SECOND_NAME_EDIT" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false" value=user.middle_name></span>
                                 </td>
                                 <td>
                                   <span ng-hide="editUserIndex == $index">{{ user.birthday }}</span>
-                                  <span ng-show="editUserIndex == $index"><input id="birth" name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" required ng-model="DATE_OF_BIRTH_EDIT" ng-pattern="/^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" value=user.birthday></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{birth_edit + $index}} name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" required ng-model="DATE_OF_BIRTH_EDIT" ng-pattern="/^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" value=user.birthday></span>
                                 </td>
                                 <td>
                                   <span ng-hide="editUserIndex == $index">{{ user.e_mail }}</span>
-                                  <span ng-show="editUserIndex == $index"><input id="e_mail" name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md" required ng-model="E_MAIL_EDIT" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ng-trim="false" value=user.birthday></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{e_mail_edit + $index}} name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md" required ng-model="E_MAIL_EDIT" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ng-trim="false" value=user.birthday></span>
                                 </td>
                                 <td class="text-center">
                                   <span ng-hide="editUserIndex == $index"><a title='Видалити' href='#' class='btn btn-danger' ng-click="deleteUser(user.id, $index)">Х</a></span>
-                                  <span ng-show="editUserIndex == $index"><button type="Submit" title='Зберегти' href='#' class='btn btn-success' ng-click="editUser(user.id)">+</button></span>
+                                  <span ng-show="editUserIndex == $index">
+                                    <button type="Submit" title='Зберегти' href='#' class='btn btn-success' ng-click="editUser(user.id, $index)">+</button>
+<!--                                     <button type="Submit" title='Зберегти' href='#' class='btn btn-link' ng-click="editUserIndex = null">-</button> -->
+                                  </span>
                                 </td>
-                                
+                              </form>  
                             </tr>
 
                         </tbody>
                       {% endverbatim %}  
                     </table>
-
-                    <nav>
+<!--                     <nav>
                       <a class='btn btn-default' href='#'>Показати ще</a>
-                    </nav>
+                    </nav> -->
                     <br/>
 
                 </div>
