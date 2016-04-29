@@ -183,30 +183,30 @@
                               </form>
                             </tr>
                             <tr ng-repeat="user in data.users">
-                              <form name="EditUserForm">  
+                              <form name="EditUserForm">
                                 <td>
                                   <span ng-hide="editUserIndex == $index">{{ user.id }}</span>
                                   <span ng-show="editUserIndex == $index">{{ user.id }}</span>
                                 </td>
                                 <td>
-                                  <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(user.id, $index)">{{ user.last_name }}</a></span>
-                                  <span ng-show="editUserIndex == $index"><input id={{lname_edit + $index}} name="lname" type="text" placeholder="прізвище" class="form-control input-md" required ng-model="LAST_NAME_EDIT" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
+                                  <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(ID, $index)">{{ user.last_name }}</a></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{lname_edit + $index}} name="lname" type="text" placeholder="прізвище" class="form-control input-md" required ng-model="user.last_name" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
                                 </td>
                                 <td>
-                                  <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(user.id, $index)">{{ user.first_name }}</a></span>
-                                  <span ng-show="editUserIndex == $index"><input id={{fname_edit + $index}} name="fname" type="text" placeholder="ім'я" class="form-control input-md" required ng-model="FIRST_NAME_EDIT" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
+                                  <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(ID, $index)">{{ user.first_name }}</a></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{fname_edit + $index}} name="fname" type="text" placeholder="ім'я" class="form-control input-md" required ng-model="user.first_name" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
                                 </td>
                                 <td>
                                   <span ng-hide="editUserIndex == $index">{{ user.middle_name }}</span>
-                                  <span ng-show="editUserIndex == $index"><input id={{sname_edit + $index}} name="sname" type="text" placeholder="по-батькові" class="form-control input-md" ng-model="SECOND_NAME_EDIT" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false" value=user.middle_name></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{sname_edit + $index}} name="sname" type="text" placeholder="по-батькові" class="form-control input-md" ng-model="user.middle_name" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
                                 </td>
                                 <td>
                                   <span ng-hide="editUserIndex == $index">{{ user.birthday }}</span>
-                                  <span ng-show="editUserIndex == $index"><input id={{birth_edit + $index}} name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" required ng-model="DATE_OF_BIRTH_EDIT" ng-pattern="/^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" value=user.birthday></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{birth_edit + $index}} name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" required ng-model="user.birthday" ng-pattern="/^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/"></span>
                                 </td>
                                 <td>
                                   <span ng-hide="editUserIndex == $index">{{ user.e_mail }}</span>
-                                  <span ng-show="editUserIndex == $index"><input id={{e_mail_edit + $index}} name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md" required ng-model="E_MAIL_EDIT" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ng-trim="false" value=user.birthday></span>
+                                  <span ng-show="editUserIndex == $index"><input id={{e_mail_edit + $index}} name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md" required ng-model="user.e_mail" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ng-trim="false"></span>
                                 </td>
                                 <td class="text-center">
                                   <span ng-hide="editUserIndex == $index"><a title='Видалити' href='#' class='btn btn-danger' ng-click="deleteUser(user.id, $index)">Х</a></span>
