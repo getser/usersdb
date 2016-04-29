@@ -1,5 +1,6 @@
   // Модуль
-var UserDBApp = angular.module("UserDBApp", ["ng-file-model"])
+// var UserDBApp = angular.module("UserDBApp", ["ng-file-model"])
+var UserDBApp = angular.module("UserDBApp", [])
 
 .constant("baseUrl", "http://127.0.0.1:8000/api/v1/user/")
 .constant("suffixUrl", "?format=json")
@@ -56,8 +57,6 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
     $scope.choosingFields = null
     $scope.editUserIndex = null
 
-    $scope.submittedFile = {};
-    $scope.obj = {};
     }
 
   // Обработчик нажатия по кнопке addNewUser
@@ -113,11 +112,11 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
       request.success(function (){
         user = {}
         $scope.editUserIndex = null
-        $scope.LAST_NAME_EDIT = ""
-        $scope.FIRST_NAME_EDIT = ""
-        $scope.SECOND_NAME_EDIT = ""
-        $scope.DATE_OF_BIRTH_EDIT = ""
-        $scope.E_MAIL_EDIT = ""
+        // $scope.LAST_NAME_EDIT = ""
+        // $scope.FIRST_NAME_EDIT = ""
+        // $scope.SECOND_NAME_EDIT = ""
+        // $scope.DATE_OF_BIRTH_EDIT = ""
+        // $scope.E_MAIL_EDIT = ""
 
         // $scope.initFirst() //commented as not needed...
 
@@ -138,69 +137,49 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
 
 
 
-  // $scope.UpLoad = function(obj){
-    
-  //   $scope.excelFile = obj.File;
+    // $scope.showPreview = false;
+    $scope.showJSONPreview = true;
+    // $scope.json_string = "";
 
-  //   // console.log(JSON.stringify($scope.excelFile))
-  //   console.log(XLSX.version)
+    $scope.fileChanged = function(files) {
+        // $scope.isProcessing = true;
+        // $scope.sheets = [];
+        $scope.excelFile = files[0];
+        XLSXReaderService.readFile($scope.excelFile, $scope.showPreview, $scope.showJSONPreview).then(function(xlsxData) {
 
-  //   var workbook = XLSX.read($scope.excelFile, {type: "binary"})
+            console.log("Helo there!1")            
 
-  //   console.log(JSON.stringify(workbook))
-
-
-
-
-
-  $scope.UpLoad = function(obj){
-    $scope.json_string = "";
-    $scope.sheets = [];
-    $scope.excelFile = obj[0];
-    $scope.selectedSheetName = 1
-
-    // console.log(JSON.stringify($scope.excelFile))
-    // console.log(XLSX.version)
-    console.log($scope.excelFile.name)
-
-    XLSXReaderService.readFile($scope.excelFile, false, true).then(function(xlsxData) {
-    // console.log("Hello there!")
-
-      $scope.sheets = xlsxData.sheets;
+            $scope.sheets = xlsxData.sheets;
+            // $scope.isProcessing = false;
         });
 
-      // $scope.json_string = JSON.stringify($scope.sheets[$scope.selectedSheetName], null, 2);
-      // $scope.json_string = JSON.stringify($scope.sheets, null, 2);
-
-
-
-    // console.log($scope.json_string)
-
-    for (sheet in $scope.sheets){
-    console.log(JSON.stringify(sheet, null, 2))
+      // $scope.choosingFields = 1
 
     }
 
+    $scope.updateJSONString = function() {
+      $scope.choosingFields = 1
+      console.log("Helo there!2")
+      $scope.new_users = $scope.sheets[$scope.selectedSheetName]
+      $scope.json_string = JSON.stringify($scope.new_users, null, 2);
+      $scope.new_file_labels = Object.keys($scope.new_users[0])
 
-  //   var fr = new FileReader()
-  //   var arr = fr.readAsArrayBuffer($scope.excelFile)
+      console.log($scope.new_file_labels)
+    }
 
-  //   // console.log(JSON.stringify(arr))
-
-    // var workbook = XLSX.readFile($scope.excelFile.name, {type: "base64"})
-
-    // console.log(JSON.stringify(workbook))
-
-    // $scope.excelFile = obj[0];
-    // console.log(JSON.stringify($scope.excelFile))
-
-    // var workbook = XLSX.readFile($scope.excelFile.name);
-
-    // var workbook = XLSX.utils.sheet_to_json($scope.excelFile);
-    // console.log(JSON.stringify(workbook))
+    // $scope.showPreviewChanged = function() {
+    //     if ($scope.showPreview) {
+    //         $scope.showJSONPreview = false;
+    //         // $scope.isProcessing = true;
+    //         XLSXReaderService.readFile($scope.excelFile, $scope.showPreview, $scope.showJSONPreview).then(function(xlsxData) {
+    //             $scope.sheets = xlsxData.sheets;
+    //             // $scope.isProcessing = false;
+    //         });
+    //     }
+    // }
 
 
-    $scope.choosingFields = 1
-  }
+    // $scope.choosingFields = 1
+  
 
 });

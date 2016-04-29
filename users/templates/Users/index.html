@@ -20,12 +20,12 @@
   <script src={{ PORTAL_URL }}{% static "javascript/jszip.min.js" %}></script>
   <script src={{ PORTAL_URL }}{% static "javascript/xlsx.js" %}></script>
   <script src={{ PORTAL_URL }}{% static "javascript/xlsx-reader.js" %}></script>
-  <script src={{ PORTAL_URL }}{% static "javascript/ng-file-model.js" %}></script>
+  <!-- <script src={{ PORTAL_URL }}{% static "javascript/ng-file-model.js" %}></script> -->
 
 
 </head>
     <body ng-controller="UserDBAppCtrl" ng-init="initFirst()">
-    {% csrf_token %}
+    
         <!-- Start Container -->
         <div class='container'>
           <div class="row">
@@ -36,18 +36,73 @@
                   <br/>
                 </div>
                 <div class="col-sm-8  col-md-9">
-                    <br/>                    
-<!--                       <form  enctype="multipart/form-data" ng-submit="UpLoad(obj)">
-                        <span class="btn btn-file"><input type="file" ng-file-model="obj.File" /></span>
-                        <button id="submit" name="submit" class="btn btn-primary" href='#'>Завантажити</button>
-                      </form> -->
+                    <br/>
 
-                      <!-- <form  enctype="multipart/form-data" ng-submit="UpLoad()"> -->
-                      <form  enctype="multipart/form-data">
-                        <span class="btn btn-file">
-                          <input type="file" accept=".xlsx" onchange="angular.element(this).scope().UpLoad(this.files)" />
-                        </span>
-                      </form>
+
+
+
+                    {% verbatim %}
+                    <!-- <h4>XLSX Reader demo</h4> -->
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                      
+                      <div class="form-group">
+                        <div class='row'>
+                          <label class="col-xs-5 control-label" for="excel_file">Завантажити з Excel файлу:</label>
+                          <div class="col-sm-6 col-md-5 col-lg-4">
+                            <input name="excel_file" accept=".xlsx" onchange="angular.element(this).scope().fileChanged(this.files);" required="true" type="file">
+                          </div>
+                        </div>
+                      </div>
+<!--                       <div class="checkbox">
+                        <label>
+                          <input ng-model="showPreview" ng-change="showPreviewChanged();" type="checkbox">Show preview of excel file
+                        </label>
+                      </div> -->
+<!--                       <div class="checkbox">
+                        <label>
+                          <input ng-model="showJSONPreview" type="checkbox">Show JSON preview of selected sheet
+                        </label>
+                      </div> -->
+<!--                       <div ng-show="isProcessing">
+                        <span>Processing ...</span>
+                      </div> -->
+                      <div class="form-group">
+                        <div class='row'>
+                          <label class="col-xs-5 control-label" for="sheet_name">Sheet Name</label>
+                          <div class="col-sm-6 col-md-5 col-lg-4">
+                            <select id="sheet_name" class="form-control" ng-change="updateJSONString()" ng-model="selectedSheetName" required="true" ng-required="true" ng-options="sheetName as sheetName for (sheetName, sheetData) in sheets">                          
+                              <option selected="selected" value="">---- Select a sheet ----</option>
+                            </select>
+                          </div>
+                      </div>
+                      <!-- <input name="sheet_name" value="{{ selectedSheetName }}" type="hidden"> -->
+                      <!-- <input value="Submit" type="submit"> -->
+                      <div ng-show="showJSONPreview">
+                        <!-- <h4>JSON Preview of selected sheet</h4> -->  
+                       <!--  <pre class="langauge-javascript">
+                          <code> -->
+                            {{ json_string }}
+                      <!--     </code>
+                        </pre> -->
+                      </div>
+    <!--                   <div ng-show="showPreview">
+                        <table class="table table-bordered" ng-repeat="(sheetName, sheetData) in sheets" ng-show="sheetName == selectedSheetName">
+                          <thead>
+                            <tr>
+                              <th ng-bind="sheetName"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="row in sheetData.data">
+                              <td ng-repeat="col in row" ng-bind="col"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div> -->
+                    </form>
+                    {% endverbatim %}
+
+
 
                 </div>
               <br/>
@@ -55,10 +110,10 @@
 
             <div class="well well-sm" ng-show="choosingFields">
               <div class="row">
-                <br/>
+                <!-- <br/> -->
                 <h4 class="text-center">Співставлення колонок</h4>
               </div>
-                <br/>
+                <!-- <br/> -->
               <!-- </div> -->
               <form class="form-horizontal">
                 <fieldset class='center'>
@@ -106,7 +161,7 @@
                           <option value="4">Посада</option>
                         </select>
                       <!-- </div> -->
-                      <br/>
+                      <!-- <br/> -->
                     </div>
                     <!-- Select Basic -->
                     <div class="col-sm-3 col-lg-2" >
@@ -123,7 +178,7 @@
                           <option value="4">Посада</option>
                         </select>
                       <!-- </div> -->
-                      <br/>
+                      <!-- <br/> -->
                     </div>
 
                     <div class="col-sm-3 col-lg-2" >
@@ -140,11 +195,11 @@
                           <option value="4">Посада</option>
                         </select>
                       <!-- </div> -->
-                      <br/>
+                      <!-- <br/> -->
                     </div>
                   </div>
-          <br/>
-          <br/>
+          <!-- <br/> -->
+          <!-- <br/> -->
                   <!-- Small well -->
                   <div class="row">
                     <!-- <div class="well well-sm"> -->
