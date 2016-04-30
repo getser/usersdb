@@ -20,11 +20,8 @@ UserDBApp.factory("XLSXReaderService", ['$q', '$rootScope',
                     deferred.resolve(data);
                 });
             });
-
             return deferred.promise;
         }
-
-
         return service;
     }
 ]);
@@ -104,7 +101,6 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
           birthday: $scope.data.users[index].birthday,
           e_mail: $scope.data.users[index].e_mail
         }
-
       // console.log(JSON.stringify(user))
       // console.log($scope.data.users[index])
 
@@ -136,50 +132,23 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
     }
 
 
-
-    // $scope.showPreview = false;
     $scope.showJSONPreview = true;
-    // $scope.json_string = "";
 
     $scope.fileChanged = function(files) {
-        // $scope.isProcessing = true;
-        // $scope.sheets = [];
         $scope.excelFile = files[0];
         XLSXReaderService.readFile($scope.excelFile, $scope.showPreview, $scope.showJSONPreview).then(function(xlsxData) {
-
-            console.log("Helo there!1")            
-
+            // console.log("Helo there!1")           
             $scope.sheets = xlsxData.sheets;
-            // $scope.isProcessing = false;
         });
-
-      // $scope.choosingFields = 1
-
     }
 
     $scope.updateJSONString = function() {
       $scope.choosingFields = 1
-      console.log("Helo there!2")
+      // console.log("Helo there!2")
       $scope.new_users = $scope.sheets[$scope.selectedSheetName]
       $scope.json_string = JSON.stringify($scope.new_users, null, 2);
       $scope.new_file_labels = Object.keys($scope.new_users[0])
 
       console.log($scope.new_file_labels)
     }
-
-    // $scope.showPreviewChanged = function() {
-    //     if ($scope.showPreview) {
-    //         $scope.showJSONPreview = false;
-    //         // $scope.isProcessing = true;
-    //         XLSXReaderService.readFile($scope.excelFile, $scope.showPreview, $scope.showJSONPreview).then(function(xlsxData) {
-    //             $scope.sheets = xlsxData.sheets;
-    //             // $scope.isProcessing = false;
-    //         });
-    //     }
-    // }
-
-
-    // $scope.choosingFields = 1
-  
-
 });

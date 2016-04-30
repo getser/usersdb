@@ -16,304 +16,214 @@
 
   <link rel="stylesheet" href={{ PORTAL_URL }}{% static "css/main.css" %}>
   <script src={{ PORTAL_URL }}{% static "javascript/app.js" %}></script>
- <!--  <script src={{ PORTAL_URL }}{% static "javascript/xlsx.full.min.js" %}></script> -->
   <script src={{ PORTAL_URL }}{% static "javascript/jszip.min.js" %}></script>
   <script src={{ PORTAL_URL }}{% static "javascript/xlsx.js" %}></script>
   <script src={{ PORTAL_URL }}{% static "javascript/xlsx-reader.js" %}></script>
-  <!-- <script src={{ PORTAL_URL }}{% static "javascript/ng-file-model.js" %}></script> -->
-
-
 </head>
-    <body ng-controller="UserDBAppCtrl" ng-init="initFirst()">
-    
-        <!-- Start Container -->
-        <div class='container'>
-          <div class="row">
-            <div class='row' id='header'>
-                <!-- Logo -->
-                <div class="col-sm-4 col-md-3">
-                  <h3>Дані користувачів</h3>
-                  <br/>
-                </div>
-                <div class="col-sm-8  col-md-9">
-                    <br/>
 
 
+<body ng-controller="UserDBAppCtrl" ng-init="initFirst()">
 
-
-                    {% verbatim %}
-                    <!-- <h4>XLSX Reader demo</h4> -->
-                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                      
-                      <div class="form-group">
-                        <div class='row'>
-                          <label class="col-xs-5 control-label" for="excel_file">Завантажити з Excel файлу:</label>
-                          <div class="col-sm-6 col-md-5 col-lg-4">
-                            <input name="excel_file" accept=".xlsx" onchange="angular.element(this).scope().fileChanged(this.files);" required="true" type="file">
-                          </div>
-                        </div>
-                      </div>
-<!--                       <div class="checkbox">
-                        <label>
-                          <input ng-model="showPreview" ng-change="showPreviewChanged();" type="checkbox">Show preview of excel file
-                        </label>
-                      </div> -->
-<!--                       <div class="checkbox">
-                        <label>
-                          <input ng-model="showJSONPreview" type="checkbox">Show JSON preview of selected sheet
-                        </label>
-                      </div> -->
-<!--                       <div ng-show="isProcessing">
-                        <span>Processing ...</span>
-                      </div> -->
-                      <div class="form-group">
-                        <div class='row'>
-                          <label class="col-xs-5 control-label" for="sheet_name">Sheet Name</label>
-                          <div class="col-sm-6 col-md-5 col-lg-4">
-                            <select id="sheet_name" class="form-control" ng-change="updateJSONString()" ng-model="selectedSheetName" required="true" ng-required="true" ng-options="sheetName as sheetName for (sheetName, sheetData) in sheets">                          
-                              <option selected="selected" value="">---- Select a sheet ----</option>
-                            </select>
-                          </div>
-                      </div>
-                      <!-- <input name="sheet_name" value="{{ selectedSheetName }}" type="hidden"> -->
-                      <!-- <input value="Submit" type="submit"> -->
-                      <div ng-show="showJSONPreview">
-                        <!-- <h4>JSON Preview of selected sheet</h4> -->  
-                       <!--  <pre class="langauge-javascript">
-                          <code> -->
-                            {{ json_string }}
-                      <!--     </code>
-                        </pre> -->
-                      </div>
-    <!--                   <div ng-show="showPreview">
-                        <table class="table table-bordered" ng-repeat="(sheetName, sheetData) in sheets" ng-show="sheetName == selectedSheetName">
-                          <thead>
-                            <tr>
-                              <th ng-bind="sheetName"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr ng-repeat="row in sheetData.data">
-                              <td ng-repeat="col in row" ng-bind="col"></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div> -->
-                    </form>
-                    {% endverbatim %}
-
-
-
-                </div>
+  <!-- Start Container -->
+  <div class='container'>
+    <div class="row">
+      <div class='row' id='header'>
+          <!-- Logo -->
+          <div class="col-sm-4 col-md-3">
+            <h3>Дані користувачів</h3>
+            <br/>
+          </div>
+          <div class="col-sm-8  col-md-9">
               <br/>
-            </div>
-
-            <div class="well well-sm" ng-show="choosingFields">
-              <div class="row">
-                <!-- <br/> -->
-                <h4 class="text-center">Співставлення колонок</h4>
-              </div>
-                <!-- <br/> -->
-              <!-- </div> -->
-              <form class="form-horizontal">
-                <fieldset class='center'>
-                  <div class="row">
-                    <!-- Select Basic -->
-                    <div class="col-lg-offset-1 col-sm-2" >
-                      <!-- <div class="form-group">             -->
-                        <label class="control-label" for="group">Ім'я</label>
-                        <select id="group" name="group" class="form-control" required="true">
-                          <option value="-1">Підберіть колонку</option>
-                          <option value=""></option>
-                          <!-- <option ng-repeat="" ></option> -->
-                        </select>
-                      <!-- </div> -->
-                      <br/>
-                    </div>
-                    <!-- Select Basic -->
-                    <div class="col-sm-2" >
-                      <!-- <div class="form-group"> -->
-                        <label class="control-label" for="group">По-батькові</label>
-                        <select id="group" name="group" class="form-control" required="true">
-                          <option value="-1">Підберіть колонку</option>
-                          <option value="1">Звати</option>
-                          <option value="1">Date of birth</option>
-                          <option value="1">Last_name</option>
-                          <option value="2">Пошта</option>
-                          <option value="3">ящик</option>
-                          <option value="4">Отчество</option>
-                          <option value="4">Посада</option>
-                        </select>
-                      <!-- </div> -->
-                    </div>
-                    <!-- Select Basic -->
-                    <div class="col-sm-2" >
-                      <!-- <div class="form-group"> -->
-                        <label class="control-label" for="group">Прізвище</label>
-                        <select id="group" name="group" class="form-control" required="true">
-                          <option value="-1">Підберіть колонку</option>
-                          <option value="1">Звати</option>
-                          <option value="1">Date of birth</option>
-                          <option value="1">Last_name</option>
-                          <option value="2">Пошта</option>
-                          <option value="3">ящик</option>
-                          <option value="4">Отчество</option>
-                          <option value="4">Посада</option>
-                        </select>
-                      <!-- </div> -->
-                      <!-- <br/> -->
-                    </div>
-                    <!-- Select Basic -->
-                    <div class="col-sm-3 col-lg-2" >
-                      <!-- <div class="form-group"> -->
-                        <label class="control-label" for="group">Дата народження</label>
-                        <select id="group" name="group" class="form-control" required="true">
-                          <option value="-1">Підберіть колонку</option>
-                          <option value="1">Звати</option>
-                          <option value="1">Date of birth</option>
-                          <option value="1">Last_name</option>
-                          <option value="2">Пошта</option>
-                          <option value="3">ящик</option>
-                          <option value="4">Отчество</option>
-                          <option value="4">Посада</option>
-                        </select>
-                      <!-- </div> -->
-                      <!-- <br/> -->
-                    </div>
-
-                    <div class="col-sm-3 col-lg-2" >
-                      <!-- <div class="form-group"> -->
-                        <label class="control-label" for="group">Електронна адреса</label>
-                        <select id="group" name="group" class="form-control" required="">
-                          <option value="-1">Підберіть колонку</option>
-                          <option value="1">Звати</option>
-                          <option value="1">Date of birth</option>
-                          <option value="1">Last_name</option>
-                          <option value="2">Пошта</option>
-                          <option value="3">ящик</option>
-                          <option value="4">Отчество</option>
-                          <option value="4">Посада</option>
-                        </select>
-                      <!-- </div> -->
-                      <!-- <br/> -->
+              {% verbatim %}
+              <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                
+                <div class="form-group">
+                  <div class='row'>
+                    <label class="col-xs-5 control-label" for="excel_file">Завантажити з Excel файлу:</label>
+                    <div class="col-sm-6 col-md-5 col-lg-4">
+                      <input name="excel_file" accept=".xlsx" onchange="angular.element(this).scope().fileChanged(this.files);" required="true" type="file">
                     </div>
                   </div>
-          <!-- <br/> -->
-          <!-- <br/> -->
-                  <!-- Small well -->
-                  <div class="row">
-                    <!-- <div class="well well-sm"> -->
-                      <!-- Button -->
-                      <div class="text-center">
-                        <button id="signup" name="signup" class="btn btn-primary" href='#' ng-click="">Зберегти</button>
-                        <a class='btn' href='#' ng-click="initFirst()">Скасувати</a>
-                      </div>
+                </div>
+                <div class="form-group" ng-show="sheets">
+                  <div class='row'>
+                    <label class="col-xs-5 control-label" for="sheet_name">Sheet Name</label>
+                    <div class="col-sm-6 col-md-5 col-lg-4">
+                      <select id="sheet_name" class="form-control" ng-change="updateJSONString()" ng-model="selectedSheetName" required="true" ng-required="true" ng-options="sheetName as sheetName for (sheetName, sheetData) in sheets">                          
+                        <option selected="selected" value="">---- Select a sheet ----</option>
+                      </select>
                     </div>
-                  
-                </fieldset>
+                  </div>
+                </div>
               </form>
-            </div>
+              {% endverbatim %}
+          </div>
+        <br/>
+      </div>
 
-            <div class='row' id='content-columns'>
-                <div class="col-xs-12" id="content-column">
-<!--                     <div class='alert alert-warning'>
-                        <p>Зміни скасовано.</p>
-                    </div> -->
-
-                    <table class='table table-hover table-striped'>
-                      {% verbatim %}
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th><a hred=''>Прізвище &uarr;</a></th>
-                                <th><a href='#'>Ім'я</a></th>
-                                <th><a href='#'>По-батькові</a></th>
-                                <th><a href='#'>Дата народження</a></th>
-                                <th><a href='#'>Ел. адреса</a></th>
-                                <th class="text-center">Дія</th>
-
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            <tr>
-                              <form name="AddUserForm">
-                                <td>#</td>
-                                <td><input id="lname" name="lname" type="text" placeholder="прізвище" class="form-control input-md" required="true" ng-model="LAST_NAME" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></td>
-                                <td><input id="fname" name="fname" type="text" placeholder="ім'я" class="form-control input-md" required="true" ng-model="FIRST_NAME" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></td>
-                                <td><input id="sname" name="sname" type="text" placeholder="по-батькові" class="form-control input-md" ng-model="SECOND_NAME" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></td>
-                                <td><input id="birth" name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" required="true" ng-model="DATE_OF_BIRTH" ng-pattern="/^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/"></td>
-                                <td><input id="e_mail" name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md" required="true" ng-model="E_MAIL" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ng-trim="false"></td>
-                                <td class="text-center"><button type="Submit" title='Зберегти' href='#' class='btn btn-success' ng-click="addNewUser()">&nbsp;&nbsp;+&nbsp;&nbsp;</button></td>
-                              </form>
-                            </tr>
-                            <tr ng-repeat="user in data.users">
-                              <form name="EditUserForm">
-                                <td>
-                                  <span ng-hide="editUserIndex == $index">{{ user.id }}</span>
-                                  <span ng-show="editUserIndex == $index">{{ user.id }}</span>
-                                </td>
-                                <td>
-                                  <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(ID, $index)">{{ user.last_name }}</a></span>
-                                  <span ng-show="editUserIndex == $index"><input id={{lname_edit + $index}} name="lname" type="text" placeholder="прізвище" class="form-control input-md" required="true" ng-model="user.last_name" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
-                                </td>
-                                <td>
-                                  <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(ID, $index)">{{ user.first_name }}</a></span>
-                                  <span ng-show="editUserIndex == $index"><input id={{fname_edit + $index}} name="fname" type="text" placeholder="ім'я" class="form-control input-md" required="true" ng-model="user.first_name" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
-                                </td>
-                                <td>
-                                  <span ng-hide="editUserIndex == $index">{{ user.middle_name }}</span>
-                                  <span ng-show="editUserIndex == $index"><input id={{sname_edit + $index}} name="sname" type="text" placeholder="по-батькові" class="form-control input-md" ng-model="user.middle_name" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
-                                </td>
-                                <td>
-                                  <span ng-hide="editUserIndex == $index">{{ user.birthday }}</span>
-                                  <span ng-show="editUserIndex == $index"><input id={{birth_edit + $index}} name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" required="true" ng-model="user.birthday" ng-pattern="/^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/"></span>
-                                </td>
-                                <td>
-                                  <span ng-hide="editUserIndex == $index">{{ user.e_mail }}</span>
-                                  <span ng-show="editUserIndex == $index"><input id={{e_mail_edit + $index}} name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md" required="true" ng-model="user.e_mail" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ng-trim="false"></span>
-                                </td>
-                                <td class="text-center">
-                                  <span ng-hide="editUserIndex == $index"><a title='Видалити' href='#' class='btn btn-danger' ng-click="deleteUser(user.id, $index)">&nbsp;&nbsp;Х&nbsp;&nbsp;</a></span>
-                                  <span ng-show="editUserIndex == $index">
-                                    <div class="input-group">
-                                      <span class="input-group-btn">
-                                        <button type="Submit" title='Зберегти' href='#' class='btn btn-success' ng-click="editUser(user.id, $index)">+</button>
-                                      </span>
-                                      <span class="input-group-btn">
-                                        <button type="Cancel" title='Відмінити' href='#' class='btn btn-info' ng-click="initFirst()">-</button>
-                                      </span>
-                                    </div>
-                                  </span>
-                                </td>
-                              </form>  
-                            </tr>
-
-                        </tbody>
-                      {% endverbatim %}  
-                    </table>
-<!--                     <nav>
-                      <a class='btn btn-default' href='#'>Показати ще</a>
-                    </nav> -->
-                    <br/>
-
-                </div>
-            </div>
-            <!-- End Main Page Content -->
-
-            <!-- Start Footer -->
-            <div class="row" id="footer">
-                <div class="col-xs-12">
-                    <p>&copy; 2016 База даних користувачів</p>
-                </div>
-            </div>
-            <!-- End Footer -->
-
+      <div class="well well-sm" ng-show="choosingFields">
+        <div class="row">
+          <h4 class="text-center">Співставлення колонок</h4>
         </div>
-        <!-- End Container -->
+        <form class="form-horizontal">
+          <fieldset class='center'>
+            <div class="row">
+              <!-- Select Basic -->
+              <div class="col-sm-2" >
+                <label class="control-label" for="lname_label">Прізвище</label>
+                <select id="lname_label" name="lname_label" class="form-control" ng-model="lname_label" ng-options="label for label in new_file_labels">
+                  <option selected="selected" value="">Підберіть колонку</option>
+                </select>
+                <br/>
+              </div>
+              <!-- Select Basic -->
+              <div class="col-lg-offset-1 col-sm-2">
+                <label class="control-label" for="fname_label">Ім'я</label>
+                <select id="fname_label" name="fname_label" class="form-control" ng-model="fname_label" ng-options="label for label in new_file_labels">
+                  <option selected="selected" value="">Підберіть колонку</option>
+                </select>
+                <br/>
+              </div>
+              <!-- Select Basic -->
+              <div class="col-sm-2" >
+                <label class="control-label" for="sname_label">По-батькові</label>
+                <select id="sname_label" name="sname_label" class="form-control" ng-model="sname_label" ng-options="label for label in new_file_labels">
+                  <option selected="selected" value="">Підберіть колонку</option>
+                </select>
+                <br/>
+              </div>
+              
+              <!-- Select Basic -->
+              <div class="col-sm-3 col-lg-2" >
+                <label class="control-label" for="birth_label">Дата народження</label>
+                <select id="birth_label" name="birth_label" class="form-control" ng-model="birth_label" ng-options="label for label in new_file_labels">
+                  <option selected="selected" value="">Підберіть колонку</option>
+                </select>
+                <br/>
+              </div>
 
-        <!-- Javascripts Section -->
-         <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
-        <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    </body>
+              <div class="col-sm-3 col-lg-2" >
+                <label class="control-label" for="mail_label">Електронна адреса</label>
+                <select id="mail_label" name="mail_label" class="form-control" ng-model="mail_label" ng-options="label for label in new_file_labels">
+                  <option selected="selected" value="">Підберіть колонку</option>
+                </select>
+                <br/>
+              </div>
+            </div>
+            <!-- Small well -->
+            <div class="row">
+                <!-- Button -->
+                <div class="text-center">
+                  <button id="signup" name="signup" class="btn btn-primary" href='#' ng-click="">Зберегти</button>
+                  <a class='btn' href='#' ng-click="initFirst()">Скасувати</a>
+                </div>
+              </div>
+            
+          </fieldset>
+        </form>
+      </div>
+
+      <div class='row' id='content-columns'>
+          <div class="col-xs-12" id="content-column">
+<!--                     <div class='alert alert-warning'>
+                  <p>Зміни скасовано.</p>
+              </div> -->
+
+              <table class='table table-hover table-striped'>
+                {% verbatim %}
+                  <thead>
+                      <tr>
+                          <th>ID</th>
+                          <th><a hred=''>Прізвище &uarr;</a></th>
+                          <th><a href='#'>Ім'я</a></th>
+                          <th><a href='#'>По-батькові</a></th>
+                          <th><a href='#'>Дата народження</a></th>
+                          <th><a href='#'>Ел. адреса</a></th>
+                          <th class="text-center">Дія</th>
+
+                      </tr>
+                  </thead>
+                  
+                  <tbody>
+                      <tr>
+                        <form name="AddUserForm">
+                          <td>#</td>
+                          <td><input id="lname" name="lname" type="text" placeholder="прізвище" class="form-control input-md" required="true" ng-model="LAST_NAME" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></td>
+                          <td><input id="fname" name="fname" type="text" placeholder="ім'я" class="form-control input-md" required="true" ng-model="FIRST_NAME" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></td>
+                          <td><input id="sname" name="sname" type="text" placeholder="по-батькові" class="form-control input-md" ng-model="SECOND_NAME" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></td>
+                          <td><input id="birth" name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" required="true" ng-model="DATE_OF_BIRTH" ng-pattern="/^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/"></td>
+                          <td><input id="e_mail" name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md" required="true" ng-model="E_MAIL" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ng-trim="false"></td>
+                          <td class="text-center"><button type="Submit" title='Зберегти' href='#' class='btn btn-success' ng-click="addNewUser()">&nbsp;&nbsp;+&nbsp;&nbsp;</button></td>
+                        </form>
+                      </tr>
+                      <tr ng-repeat="user in data.users">
+                        <form name="EditUserForm">
+                          <td>
+                            <span ng-hide="editUserIndex == $index">{{ user.id }}</span>
+                            <span ng-show="editUserIndex == $index">{{ user.id }}</span>
+                          </td>
+                          <td>
+                            <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(ID, $index)">{{ user.last_name }}</a></span>
+                            <span ng-show="editUserIndex == $index"><input id={{lname_edit + $index}} name="lname" type="text" placeholder="прізвище" class="form-control input-md" required="true" ng-model="user.last_name" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
+                          </td>
+                          <td>
+                            <span ng-hide="editUserIndex == $index"><a title='Редагувати' href='#' ng-click="editUserSwitcher(ID, $index)">{{ user.first_name }}</a></span>
+                            <span ng-show="editUserIndex == $index"><input id={{fname_edit + $index}} name="fname" type="text" placeholder="ім'я" class="form-control input-md" required="true" ng-model="user.first_name" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
+                          </td>
+                          <td>
+                            <span ng-hide="editUserIndex == $index">{{ user.middle_name }}</span>
+                            <span ng-show="editUserIndex == $index"><input id={{sname_edit + $index}} name="sname" type="text" placeholder="по-батькові" class="form-control input-md" ng-model="user.middle_name" ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false"></span>
+                          </td>
+                          <td>
+                            <span ng-hide="editUserIndex == $index">{{ user.birthday }}</span>
+                            <span ng-show="editUserIndex == $index"><input id={{birth_edit + $index}} name="birth" type='text' class="form-control date' input-md" placeholder="напр. 1984-06-17" required="true" ng-model="user.birthday" ng-pattern="/^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/"></span>
+                          </td>
+                          <td>
+                            <span ng-hide="editUserIndex == $index">{{ user.e_mail }}</span>
+                            <span ng-show="editUserIndex == $index"><input id={{e_mail_edit + $index}} name="e_mail" type="text" placeholder="електронна@пошта.тут" class="form-control input-md" required="true" ng-model="user.e_mail" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ng-trim="false"></span>
+                          </td>
+                          <td class="text-center">
+                            <span ng-hide="editUserIndex == $index"><a title='Видалити' href='#' class='btn btn-danger' ng-click="deleteUser(user.id, $index)">&nbsp;&nbsp;Х&nbsp;&nbsp;</a></span>
+                            <span ng-show="editUserIndex == $index">
+                              <div class="input-group">
+                                <span class="input-group-btn">
+                                  <button type="Submit" title='Зберегти' href='#' class='btn btn-success' ng-click="editUser(user.id, $index)">+</button>
+                                </span>
+                                <span class="input-group-btn">
+                                  <button type="Cancel" title='Відмінити' href='#' class='btn btn-info' ng-click="initFirst()">-</button>
+                                </span>
+                              </div>
+                            </span>
+                          </td>
+                        </form>  
+                      </tr>
+
+                  </tbody>
+                {% endverbatim %}  
+              </table>
+<!--                     <nav>
+                <a class='btn btn-default' href='#'>Показати ще</a>
+              </nav> -->
+              <br/>
+
+          </div>
+      </div>
+      <!-- End Main Page Content -->
+
+      <!-- Start Footer -->
+      <div class="row" id="footer">
+          <div class="col-xs-12">
+              <p>&copy; 2016 База даних користувачів</p>
+          </div>
+      </div>
+      <!-- End Footer -->
+
+  </div>
+  <!-- End Container -->
+
+  <!-- Javascripts Section -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+  <script src="https://cdn.jsdelivr.net/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  </body>
 </html>
