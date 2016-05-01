@@ -53,7 +53,7 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
 
     $scope.choosingFields = null
     $scope.editUserIndex = null
-
+    $scope.selectedSheetName = null
     }
 
   // Обработчик нажатия по кнопке addNewUser
@@ -137,7 +137,7 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
     $scope.fileChanged = function(files) {
         $scope.excelFile = files[0];
         XLSXReaderService.readFile($scope.excelFile, $scope.showPreview, $scope.showJSONPreview).then(function(xlsxData) {
-            // console.log("Helo there!1")           
+            // console.log("Hello there!1")           
             $scope.sheets = xlsxData.sheets;
         });
     }
@@ -150,5 +150,28 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
       $scope.new_file_labels = Object.keys($scope.new_users[0])
 
       console.log($scope.new_file_labels)
+    }
+
+    $scope.loadUserList = function() {
+      console.log("User list loading started!")
+
+      $scope.chosen_labels = {}
+      $scope.chosen_labels.last_name_label = $scope.lname_label
+      $scope.chosen_labels.first_name_label = $scope.fname_label
+      $scope.chosen_labels.second_name_label = $scope.sname_label
+      $scope.chosen_labels.birthday_label = $scope.birth_label
+      $scope.chosen_labels.e_mail_label = $scope.mail_label
+
+      console.log(JSON.stringify($scope.chosen_labels))
+
+      $scope.loading_user_list = {}
+      for (user in $scope.new_users) {
+          console.log(JSON.stringify(user))
+        for (user_data in user) {
+          // console.log(Object.keys(user_data))
+          // console.log(JSON.stringify(user_data))
+        }
+      }
+
     }
 });
