@@ -144,34 +144,28 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
   $scope.loadUserList = function() {
     console.log("User list loading started!")
 
-        // var user = {
-        //   last_name: ,
-        //   first_name: ,
-        //   middle_name: ,
-        //   birthday: ,
-        //   e_mail: 
-        // }
-
-    $scope.chosen_labels = []
-    $scope.chosen_labels.push($scope.lname_label)
-    $scope.chosen_labels.push($scope.fname_label)
-    $scope.chosen_labels.push($scope.sname_label)
-    $scope.chosen_labels.push($scope.birth_label)
-    $scope.chosen_labels.push($scope.mail_label)
-
-    console.log('chosen_labels:')
-    console.log($scope.chosen_labels)
-
     $scope.loading_users_list = []
     for (var user in $scope.new_users) {
-      var loading_user = {}
       var current_user = $scope.new_users[user]
-      Object.keys(current_user).forEach(function(key, index) {
-        if ($scope.chosen_labels.indexOf(key) > -1) {
-          loading_user[key] = current_user[key]
+      
+      var loading_user = {
+          last_name: current_user[$scope.lname_label],
+          first_name: current_user[$scope.fname_label],
+          middle_name: current_user[$scope.sname_label],
+          birthday: current_user[$scope.birth_label],
+          e_mail: current_user[$scope.mail_label]
         }
-      });
-      $scope.loading_users_list.push(current_user)
+
+      // var loading_user = {}
+      // loading_user[last_name] = current_user[$scope.lname_label]
+      // loading_user[first_name] = current_user[$scope.fname_label]
+      // loading_user[middle_name] = current_user[$scope.sname_label]
+      // loading_user[birthday] = current_user[$scope.birth_label]
+      // loading_user[e_mail] = current_user[$scope.mail_label]
+
+      if (loading_user['last_name'] && loading_user['first_name'] && loading_user['birthday'] && loading_user['e_mail']){
+        $scope.loading_users_list.push(loading_user)
+      }
     }
     // console.log('new_users_in file:')
     // console.log(JSON.stringify($scope.new_users, null, 2))
