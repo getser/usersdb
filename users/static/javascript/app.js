@@ -136,42 +136,54 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
 
     $scope.fileChanged = function(files) {
         $scope.excelFile = files[0];
-        XLSXReaderService.readFile($scope.excelFile, $scope.showPreview, $scope.showJSONPreview).then(function(xlsxData) {
-            // console.log("Hello there!1")           
+        XLSXReaderService.readFile($scope.excelFile, $scope.showPreview, $scope.showJSONPreview).then(function(xlsxData) {         
             $scope.sheets = xlsxData.sheets;
         });
     }
 
     $scope.updateJSONString = function() {
       $scope.choosingFields = 1
-      // console.log("Helo there!2")
       $scope.new_users = $scope.sheets[$scope.selectedSheetName]
       $scope.json_string = JSON.stringify($scope.new_users, null, 2);
       $scope.new_file_labels = Object.keys($scope.new_users[0])
-
+      console.log('labels_tochoose_from:')
       console.log($scope.new_file_labels)
     }
 
     $scope.loadUserList = function() {
       console.log("User list loading started!")
 
-      $scope.chosen_labels = {}
-      $scope.chosen_labels.last_name_label = $scope.lname_label
-      $scope.chosen_labels.first_name_label = $scope.fname_label
-      $scope.chosen_labels.second_name_label = $scope.sname_label
-      $scope.chosen_labels.birthday_label = $scope.birth_label
-      $scope.chosen_labels.e_mail_label = $scope.mail_label
+      $scope.chosen_labels = []
+      $scope.chosen_labels.push($scope.lname_label)
+      $scope.chosen_labels.push($scope.fname_label)
+      $scope.chosen_labels.push($scope.sname_label)
+      $scope.chosen_labels.push($scope.birth_label)
+      $scope.chosen_labels.push($scope.mail_label)
 
+      console.log('chosen_labels:')
       console.log(JSON.stringify($scope.chosen_labels))
 
-      $scope.loading_user_list = {}
-      for (user in $scope.new_users) {
-          console.log(JSON.stringify(user))
-        for (user_data in user) {
+      $scope.loading_user_list = []
+      for (var user in $scope.new_users) {
+        var current_user = {}
+          // console.log(JSON.stringify($scope.new_users[user]))
+        for (var user_data_key in $scope.new_users[user]) {
+          // console.log(user_data_key)
           // console.log(Object.keys(user_data))
           // console.log(JSON.stringify(user_data))
+
+          if (user_data_key in $scope.chosen_labels) {
+            // console.log(user_data_key)
+            // console.log($scope.new_users[user][user_data_key])
+            current_user[user_data_key] = $scope.new_users[user][user_data_key]
+          }
         }
+        $scope.loading_user_list.push(current_user)
       }
 
+      console.log('new_users_in file:')
+      console.log(JSON.stringify($scope.new_users, null, 2))
+      console.log('new_users_to_upload:')
+      console.log(JSON.stringify($scope.loading_user_list, null, 2))
     }
 });
