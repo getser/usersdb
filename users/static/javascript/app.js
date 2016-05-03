@@ -1,5 +1,4 @@
-  // Модуль
-// var UserDBApp = angular.module("UserDBApp", ["ng-file-model"])
+// Модуль
 var UserDBApp = angular.module("UserDBApp", [])
 
 .constant("baseUrl", "http://127.0.0.1:8000/api/v1/user/")
@@ -7,31 +6,27 @@ var UserDBApp = angular.module("UserDBApp", [])
 
 // Сервис
 UserDBApp.factory("XLSXReaderService", ['$q', '$rootScope',
-    function($q, $rootScope) {
-        var service = function(data) {
-            angular.extend(this, data);
-        }
-
-        service.readFile = function(file, readCells, toJSON) {
-            var deferred = $q.defer();
-
-            XLSXReader(file, readCells, toJSON, function(data) {
-                $rootScope.$apply(function() {
-                    deferred.resolve(data);
-                });
-            });
-            return deferred.promise;
-        }
-        return service;
+  function($q, $rootScope) {
+    var service = function(data) {
+      angular.extend(this, data);
     }
+    service.readFile = function(file, readCells, toJSON) {
+      var deferred = $q.defer();
+      XLSXReader(file, readCells, toJSON, function(data) {
+        $rootScope.$apply(function() {
+          deferred.resolve(data);
+        });
+      });
+      return deferred.promise;
+    }
+    return service;
+  }
 ]);
-
 
 // Контроллер
 UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUrl, XLSXReaderService) {
 
-  $scope.initFirst=function(){
-
+  $scope.initFirst=function() {
     var promise =  $http.get(baseUrl + suffixUrl);
     promise.then(fulfilled, rejected)
 
@@ -69,10 +64,8 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
         }
 
       var request = $http.post(baseUrl + suffixUrl, user)
-      request.success(function (){
-
+      request.success(function () {
         // console.log(JSON.stringify(user))
-
         $scope.LAST_NAME = ""
         $scope.FIRST_NAME = ""
         $scope.SECOND_NAME = ""
@@ -80,7 +73,6 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
         $scope.E_MAIL = ""
 
         $scope.initFirst()
-
       });   
   }}  
 
@@ -105,7 +97,7 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
     // console.log($scope.data.users[index])
 
     var request = $http.put(baseUrl + ID + '/' + suffixUrl, user)
-    request.success(function (){
+    request.success(function () {
       user = {}
       $scope.editUserIndex = null
       // $scope.initFirst() //commented as not needed...
@@ -117,9 +109,7 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
     // console.log(ID)
       var request = $http.delete(baseUrl + ID + '/' + suffixUrl)
       request.success(function (){
-
         $scope.data.users.splice(index, 1);
-
       }); 
     }
 
@@ -128,7 +118,7 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
   $scope.fileChanged = function(files) {
       $scope.excelFile = files[0];
       XLSXReaderService.readFile($scope.excelFile, $scope.showPreview, $scope.showJSONPreview).then(function(xlsxData) {         
-          $scope.sheets = xlsxData.sheets;
+        $scope.sheets = xlsxData.sheets;
       });
     }
 
@@ -137,17 +127,15 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
     $scope.new_users = $scope.sheets[$scope.selectedSheetName]
     $scope.json_string = JSON.stringify($scope.new_users, null, 2);
     $scope.new_file_labels = Object.keys($scope.new_users[0])
-    console.log('labels_to_choose_from:')
-    console.log($scope.new_file_labels)
+    // console.log('labels_to_choose_from:')
+    // console.log($scope.new_file_labels)
   }
 
   $scope.loadUserList = function() {
-    console.log("User list loading started!")
-
+    // console.log("User list loading started!")
     $scope.loading_users_list = []
     for (var user in $scope.new_users) {
       var current_user = $scope.new_users[user]
-      
       var loading_user = {
           last_name: current_user[$scope.lname_label],
           first_name: current_user[$scope.fname_label],
@@ -156,14 +144,13 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
           e_mail: current_user[$scope.mail_label]
         }
 
-      // var loading_user = {}
-      // loading_user[last_name] = current_user[$scope.lname_label]
-      // loading_user[first_name] = current_user[$scope.fname_label]
-      // loading_user[middle_name] = current_user[$scope.sname_label]
-      // loading_user[birthday] = current_user[$scope.birth_label]
-      // loading_user[e_mail] = current_user[$scope.mail_label]
-
       if (loading_user['last_name'] && loading_user['first_name'] && loading_user['birthday'] && loading_user['e_mail']){
+
+        var request = $http.post(baseUrl + suffixUrl, loading_user)
+        request.success(function () {
+          console.log('uploaded:')
+          console.log(loading_user)
+        });
         $scope.loading_users_list.push(loading_user)
       }
     }
@@ -171,5 +158,7 @@ UserDBApp.controller("UserDBAppCtrl", function ($scope, $http, baseUrl, suffixUr
     // console.log(JSON.stringify($scope.new_users, null, 2))
     console.log('new_users_to_upload:')
     console.log(JSON.stringify($scope.loading_users_list, null, 2))
+    $scope.initFirst()
+    $scope.sheets = null
   }
 });
